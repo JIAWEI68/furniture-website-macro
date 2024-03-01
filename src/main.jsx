@@ -10,13 +10,13 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import AddFurnitureForm from "./components/AddFurnitureForm.jsx";
+import AddFurniture from "./pages/AddFurniture.jsx";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<App />}>
-        <Route path="/addfurniture" element={<AddFurnitureForm />} />
+        <Route path="/addfurniture" element={<AddFurniture />} />
       </Route>
     </Route>
   )
