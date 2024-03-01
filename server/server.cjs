@@ -1,6 +1,6 @@
 const express = require("express");
 
-let FurnitureController = require('../controller/furnitureController');
+let FurnitureController = require('../controller/furnitureController.cjs');
 const bodyParser = require("body-parser");
 let app = express();
 

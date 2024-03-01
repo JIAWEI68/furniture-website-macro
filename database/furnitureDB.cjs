@@ -1,6 +1,6 @@
 "use strict";
 
-let db = require("../server/connection");
+let db = require("../server/connection.cjs");
 
 class FurnitureDB {
   getAllFurniture(callback) {

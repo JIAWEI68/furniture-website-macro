@@ -1,7 +1,7 @@
 "use strict";
 
-const furnitureDB = require("../database/furnitureDB");
-const Furniture = require("../models/furniture");
+const furnitureDB = require("../database/furnitureDB.cjs");
+const Furniture = require("../models/furniture.cjs");
 
 let FurnitureDB = new furnitureDB();
 
