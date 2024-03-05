@@ -95,6 +95,8 @@ const AddFurniture = () => {
     WarrantyDetails,
   ]);
 
+  
+
   const AddFurniture = async () => {
     console.log(furniture.furnitureName);
     console.log(category)
@@ -175,16 +177,22 @@ const AddFurniture = () => {
       );
     }
   }
-  const handleMaterialDetails = (e) => {
-    // MaterialDetails(Material.length).push(e.target.value); 
-    setMaterialDetails((current)=> [...current, e.target.value]);
+  function handleMaterialDetails(index, e) {
+    const values = [...MaterialDetails];
+    values[index] = e.target.value;
+    setMaterialDetails(values);
   };
-  const handleDimensionsDetails = (e) => {
-    setDimensionsDetails((current)=> [...current, e.target.value]);
+  function handleDimensionsDetails(index, e) {
+    const values = [...DimensionsDetails];
+    values[index] = e.target.value;
+    setDimensionsDetails(values);
   };
-  const handleWarrantyDetails = (e) => {
-    setWarrantyDetails((current)=> [...current, e.target.value]);
-  };
+
+  function handleWarrantyDetails(index, e) {
+    const values = [...WarrantyDetails];
+    values[index] = e.target.value;
+    setWarrantyDetails(values);
+  }
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -453,11 +461,11 @@ const AddFurniture = () => {
         <Stack direction="row" spacing={5}>
           <Box border={1} borderRadius={8} p={4}>
             <Heading size="xl">Product Material and Care</Heading>
-            {Material.map((item) => (
-              <Container key={item} maxW="container.sm">
+            {Material.map((item, i) => (
+              <Container key={i} maxW="container.sm">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChangeCapture={handleMaterialDetails}
+                  onChangeCapture={(e)=> {handleMaterialDetails(i, e)}}
                   size="md"
                 />
               </Container>
@@ -465,11 +473,11 @@ const AddFurniture = () => {
           </Box>
           <Box border={1} borderRadius={8} p={4}>
             <Heading size="xl">Product Dimensions</Heading>
-            {Dimensions.map((item) => (
-              <Container key={item} maxW="2xl">
+            {Dimensions.map((item, i) => (
+              <Container key={i} maxW="2xl">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChange={handleDimensionsDetails}
+                  onChange={(e) => {handleDimensionsDetails(i,e)}}
                   size="md"
                 />
               </Container>
@@ -477,11 +485,11 @@ const AddFurniture = () => {
           </Box>
           <Box border={1} borderRadius={8} p={4}>
             <Heading size="xl">Delivery and Warranty</Heading>
-            {Warranty.map((item) => (
-              <Container key={item.name} maxW="2xl">
+            {Warranty.map((item, i) => (
+              <Container key={i} maxW="2xl">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChange={handleWarrantyDetails}
+                  onChange={(e)=>{handleWarrantyDetails(i, e)}}
                   size="md"
                 />
               </Container>
