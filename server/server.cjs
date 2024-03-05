@@ -1,4 +1,6 @@
 const express = require("express");
+const cors = require("cors");
+
 
 let FurnitureController = require('../controller/furnitureController.cjs');
 const bodyParser = require("body-parser");
@@ -6,6 +8,7 @@ let app = express();
 
 app.use(express.static("./public"));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.route("/furniture").get(FurnitureController.getAllFurniture);
 app.route("/furniture/sofa").get(FurnitureController.getAllSofas);

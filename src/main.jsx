@@ -12,19 +12,18 @@ import {
 import { ChakraProvider } from "@chakra-ui/react";
 import AddFurniture from "./pages/AddFurniture.jsx";
 
-const routes = createBrowserRouter(
+const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/" element={<App />}>
+        <Route path = "/" element={<App />} />
         <Route path="/addfurniture" element={<AddFurniture />} />
-      </Route>
+        <Route path="/*" element={<div>Not Found</div>} />
     </Route>
   )
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider>
-    {" "}
-    <RouterProvider router={routes} />
+    <RouterProvider router={router} />
   </ChakraProvider>
 );
