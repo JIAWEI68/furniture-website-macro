@@ -15,6 +15,7 @@ import {
   RadioGroup,
   Container,
   Heading,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 import { rootUri } from "/apis/api.js";
 
@@ -31,7 +32,6 @@ const AddFurniture = () => {
     category: "",
   });
   const [furnitureList, setFurnitureList] = useState([]);
-  const [State, setState] = useState(false);
   const [category, setCategory] = useState("Sofa");
   const [Material, setMaterial] = useState([]);
   const [Dimensions, setDimensions] = useState([]);
@@ -52,11 +52,11 @@ const AddFurniture = () => {
       Warranty.toString() +
       "]"
   );
-  const [MaterialDetails, setMaterialDetails] = useState([
-  ]);
+  const [MaterialDetails, setMaterialDetails] = useState([]);
   const [DimensionsDetails, setDimensionsDetails] = useState([]);
   const [WarrantyDetails, setWarrantyDetails] = useState([]);
   const [featuresDetails, setFeaturesDetails] = useState("");
+  const [checkMaterial, setCheckMaterial] = useState([]);
   useEffect(() => {
     setFeaturesList(
       "[" +
@@ -95,11 +95,9 @@ const AddFurniture = () => {
     WarrantyDetails,
   ]);
 
-  
-
   const AddFurniture = async () => {
     console.log(furniture.furnitureName);
-    console.log(category)
+    console.log(category);
     const response = await fetch(`${rootUri}/furniture`, {
       method: "POST",
       headers: {
@@ -115,7 +113,7 @@ const AddFurniture = () => {
         image: furniture.image,
         video: furniture.video,
         material: furniture.material,
-        category: category
+        category: category,
       }),
     });
     const data = await response.json();
@@ -142,17 +140,22 @@ const AddFurniture = () => {
     setWarrantyDetails([]);
   };
   const handleMaterials = (e) => {
-    console.log(Material);
     const exist = Material.includes(e.target.value);
+    setCheckMaterial({
+      ...checkMaterial,
+      [e.target.value]: e.target.checked,
+    });
     console.log(exist);
-    if (exist === false) {
-      setMaterial((current) => [...current, e.target.value]);
-    }
     if (exist === true) {
       setMaterial((current) =>
         current.filter((item) => item !== e.target.value)
       );
     }
+    if (exist === false) {
+      setMaterial([...Material, e.target.value]);
+    }
+    console.log(checkMaterial);
+    console.log(Material);
   };
   const handleDimensions = (e) => {
     const exist = Dimensions.includes(e.target.value);
@@ -166,7 +169,7 @@ const AddFurniture = () => {
     }
   };
   const handleWarranty = (e) => {
-    console.log(Warranty )
+    console.log(Warranty);
     const exist = Warranty.includes(e.target.value);
     if (exist === false) {
       setWarranty((current) => [...current, e.target.value]);
@@ -176,22 +179,41 @@ const AddFurniture = () => {
         current.filter((item) => item !== e.target.value)
       );
     }
-  }
-  function handleMaterialDetails(index, e) {
+  };
+  const handleMaterialDetails = (index, e, item) => {
     const values = [...MaterialDetails];
-    values[index] = e.target.value;
-    setMaterialDetails(values);
-  };
+    // Get index of the name of the true or false value
+    const object = (Object.keys(checkMaterial)[index]);
+    console.log(checkMaterial[object])
+    if (checkMaterial[object] === false) {
+      setMaterialDetails(
+        MaterialDetails.filter((item) => item !== MaterialDetails[i])
+      );
+    } 
+    if (checkMaterial[object] === true) {
+      values[index] = e.target.value;
+      setMaterialDetails(values);
+    }
+    console.log(MaterialDetails);
+  }
   function handleDimensionsDetails(index, e) {
-    const values = [...DimensionsDetails];
-    values[index] = e.target.value;
-    setDimensionsDetails(values);
-  };
+    if (DimensionsDetails.index !== Dimensions.index) {
+      setDimensionsDetails([]);
+    } else {
+      const values = [...DimensionsDetails];
+      values[index] = e.target.value;
+      setDimensionsDetails(values);
+    }
+  }
 
   function handleWarrantyDetails(index, e) {
-    const values = [...WarrantyDetails];
-    values[index] = e.target.value;
-    setWarrantyDetails(values);
+    if (WarrantyDetails.index !== Warranty.index) {
+      setWarrantyDetails([]);
+    } else {
+      const values = [...WarrantyDetails];
+      values[index] = e.target.value;
+      setWarrantyDetails(values);
+    }
   }
 
   return (
@@ -289,6 +311,7 @@ const AddFurniture = () => {
           <Stack direction="row" spacing={5}>
             <Box borderWidth="1px" borderRadius="lg">
               <Heading size="xl">Product Material and Care</Heading>
+              <CheckboxGroup></CheckboxGroup>
               <Stack spacing={2} direction="column">
                 <Checkbox value="Material" onChange={handleMaterials}>
                   Material
@@ -465,7 +488,9 @@ const AddFurniture = () => {
               <Container key={i} maxW="container.sm">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChangeCapture={(e)=> {handleMaterialDetails(i, e)}}
+                  onChangeCapture={(e) => {
+                    handleMaterialDetails(i, e, item);
+                  }}
                   size="md"
                 />
               </Container>
@@ -477,7 +502,9 @@ const AddFurniture = () => {
               <Container key={i} maxW="2xl">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChange={(e) => {handleDimensionsDetails(i,e)}}
+                  onChange={(e) => {
+                    handleDimensionsDetails(i, e);
+                  }}
                   size="md"
                 />
               </Container>
@@ -489,7 +516,9 @@ const AddFurniture = () => {
               <Container key={i} maxW="2xl">
                 <Text mb="8px">{item}</Text>
                 <Input
-                  onChange={(e)=>{handleWarrantyDetails(i, e)}}
+                  onChange={(e) => {
+                    handleWarrantyDetails(i, e);
+                  }}
                   size="md"
                 />
               </Container>
