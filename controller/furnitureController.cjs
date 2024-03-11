@@ -14,6 +14,16 @@ function getAllFurniture(req, res) {
     }
   });
 }
+
+function getFurnitureById(req, res) {
+  FurnitureDB.getFurnitureById(parseInt(req.params.id), (err, result) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    res.status(200).send(result);
+  });
+}
+
 function getAllSofas(req, res) {
   FurnitureDB.getSofas((err, result) => {
     if (err) {
@@ -61,21 +71,23 @@ function InsertFurnitureFeatures(req, res) {
 }
 
 function UpdateCost(req, res) {
-  FurnitureDB.UpdateCost(parseInt(req.params.id), parseFloat(req.body.percent), (err, result) => {
-    if (err) {
-      res.status(500
-      ).send(err);
+  FurnitureDB.UpdateCost(
+    parseInt(req.params.id),
+    parseFloat(req.body.percent),
+    (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).send(result);
     }
-    res.status(200).send(result);
-  }
   );
 }
-
 
 module.exports = {
   getAllFurniture,
   getAllSofas,
   InsertFurniture,
   InsertFurnitureFeatures,
-  UpdateCost
+  UpdateCost,
+  getFurnitureById
 };

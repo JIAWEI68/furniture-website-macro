@@ -19,6 +19,7 @@ app.route("/furniture/sofa").get(FurnitureController.getAllSofas);
 app.route("/furniture").post(FurnitureController.InsertFurniture);
 app.route("/furniture/features").post(FurnitureController.InsertFurnitureFeatures);
 app.route("/furniture/updateCost/:id").put(FurnitureController.UpdateCost);
+app.route("/furniture/:id").get(FurnitureController.getFurnitureById);
 
 app.listen(3030, "127.0.0.1");
 console.log("Server running on port 3030");

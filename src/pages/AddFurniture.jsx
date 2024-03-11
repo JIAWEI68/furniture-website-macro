@@ -16,7 +16,10 @@ import {
   Container,
   Heading,
   CheckboxGroup,
+  Icon,
+  IconButton,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { rootUri } from "/apis/api.js";
 
 const AddFurniture = () => {
@@ -31,14 +34,10 @@ const AddFurniture = () => {
     material: "",
     category: "",
   });
-  const [furnitureList, setFurnitureList] = useState([]);
   const [category, setCategory] = useState("Sofa");
   const [Material, setMaterial] = useState([]);
   const [Dimensions, setDimensions] = useState([]);
   const [Warranty, setWarranty] = useState([]);
-  const [features, setFeatures] = useState(
-    "Material" + ";" + "Dimensions" + ";" + "Warranty"
-  );
   const [featuresList, setFeaturesList] = useState(
     "[" +
       Material.toString() +
@@ -57,44 +56,59 @@ const AddFurniture = () => {
   const [WarrantyDetails, setWarrantyDetails] = useState([]);
   const [featuresDetails, setFeaturesDetails] = useState("");
   const [checkMaterial, setCheckMaterial] = useState([]);
-  useEffect(() => {
-    setFeaturesList(
-      "[" +
-        Material.toString() +
-        "]" +
-        ";" +
-        "[" +
-        Dimensions.toString() +
-        "]" +
-        ";" +
-        "[" +
-        Warranty.toString() +
-        "]"
-    );
-    setFeaturesDetails(
-      "[" +
-        MaterialDetails.toString() +
-        "]" +
-        ";" +
-        "[" +
-        DimensionsDetails.toString() +
-        "]" +
-        ";" +
-        "[" +
-        WarrantyDetails.toString() +
-        "]"
-    );
-    console.log(featuresList);
-    console.log(featuresDetails);
-  }, [
-    Material,
-    Dimensions,
-    Warranty,
-    MaterialDetails,
-    DimensionsDetails,
-    WarrantyDetails,
+  const [MatNames, setMatNames] = useState([
+    "Material",
+    "Finish",
+    "Hardware Feature",
+    "Door Mechanism",
+    "Care",
+    "ColourVariance",
+    "Leg Frame",
+    "Saftey Tip",
+    "Table Top",
+    "Bed Slats",
+    "Fabric Composition",
+    "Filling",
+    "Suspension",
+    "Cover Type",
+    "Special Feature",
+    "Frame",
+    "Base",
+    "Disclaimer",
+    "Cushion",
   ]);
-
+  const [DimNames, setDimNames] = useState([
+    "Dimension",
+    "Seatable Width",
+    "Seating Depth",
+    "Seating Height",
+    "BackRest Height",
+    "Armrest Height",
+    "Packaging Dimensions",
+    "Leg Height",
+    "Product Weight",
+    "Max Bearing Support",
+    "Leg Room - Height Clearance",
+    "Leg to Leg Distance",
+    "Capacity",
+    "Levellers",
+    "Slat to Slat Distance",
+    "Recommended Mattress Thickness",
+    "Frame Height",
+    "Slat Height",
+    "Mattress Space Dimension",
+  ]);
+  const [checkDim, setCheckDim] = useState([]);
+  const [WarrName, setWarrName] = useState([
+    "Cancellation",
+    "Warranty",
+    "Return Policy",
+    "Assembly",
+  ]);
+  const [checkWarr, setCheckWarr] = useState([]);
+  const [disMat, setDisMat] = useState([]);
+  const [disDim, setDisDim] = useState([]);
+  const [disWarr, setDisWarr] = useState([]);
   const AddFurniture = async () => {
     console.log(furniture.furnitureName);
     console.log(category);
@@ -139,11 +153,19 @@ const AddFurniture = () => {
     setDimensionsDetails([]);
     setWarrantyDetails([]);
   };
-  const handleMaterials = (e) => {
+  const handleMaterials = (e, index) => {
     const exist = Material.includes(e.target.value);
-    setCheckMaterial({
-      ...checkMaterial,
-      [e.target.value]: e.target.checked,
+    //Update the object to true or false based off the value of the checkbox
+    setCheckMaterial((current) => {
+      // Set data as an object with the target value
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      //Return the data
+      return data;
+    });
+    //Disable checkbox when clicked
+    setDisMat((current) => {
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      return data;
     });
     console.log(exist);
     if (exist === true) {
@@ -159,6 +181,14 @@ const AddFurniture = () => {
   };
   const handleDimensions = (e) => {
     const exist = Dimensions.includes(e.target.value);
+    setCheckDim((current) => {
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      return data;
+    });
+    setDisDim((current) => {
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      return data;
+    });
     if (exist === false) {
       setDimensions((current) => [...current, e.target.value]);
     }
@@ -169,8 +199,15 @@ const AddFurniture = () => {
     }
   };
   const handleWarranty = (e) => {
-    console.log(Warranty);
     const exist = Warranty.includes(e.target.value);
+    setCheckWarr((current) => {
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      return data;
+    });
+    setDisWarr((current) => {
+      const data = { ...current, [e.target.value]: !current[e.target.value] };
+      return data;
+    });
     if (exist === false) {
       setWarranty((current) => [...current, e.target.value]);
     }
@@ -182,359 +219,342 @@ const AddFurniture = () => {
   };
   const handleMaterialDetails = (index, e, item) => {
     const values = [...MaterialDetails];
-    // Get index of the name of the true or false value
-    const object = (Object.keys(checkMaterial)[index]);
-    console.log(checkMaterial[object])
-    if (checkMaterial[object] === false) {
-      setMaterialDetails(
-        MaterialDetails.filter((item) => item !== MaterialDetails[i])
-      );
-    } 
-    if (checkMaterial[object] === true) {
-      values[index] = e.target.value;
-      setMaterialDetails(values);
-    }
-    console.log(MaterialDetails);
-  }
+    values[index] = e.target.value;
+    setMaterialDetails(values);
+  };
   function handleDimensionsDetails(index, e) {
-    if (DimensionsDetails.index !== Dimensions.index) {
-      setDimensionsDetails([]);
-    } else {
-      const values = [...DimensionsDetails];
-      values[index] = e.target.value;
-      setDimensionsDetails(values);
-    }
+    const values = [...DimensionsDetails];
+    values[index] = e.target.value;
+    setDimensionsDetails(values);
   }
 
   function handleWarrantyDetails(index, e) {
-    if (WarrantyDetails.index !== Warranty.index) {
-      setWarrantyDetails([]);
-    } else {
-      const values = [...WarrantyDetails];
-      values[index] = e.target.value;
-      setWarrantyDetails(values);
-    }
+    const values = [...WarrantyDetails];
+    values[index] = e.target.value;
+    setWarrantyDetails(values);
   }
 
+  const deleteMaterial = (index, item) => {
+    //Filter the item out from the array
+    MaterialDetails.filter((item) => item !== MaterialDetails[index]);
+    //Update the state of the checkbox to true or false based off the value of the checkbox
+    setCheckMaterial((current) => {
+      // Set data as an object with the target value
+      const data = { ...current, [item]: false };
+      //Return the data
+      return data;
+    });
+    setDisMat((current) => {
+      const data = { ...current, [item]: false };
+      return data;
+    });
+    //Remove the item from the array
+    MaterialDetails.splice(Material.indexOf(item), 1);
+    Material.splice(Material.indexOf(item), 1);
+    console.log(MaterialDetails);
+    console.log(featuresDetails);
+  };
+
+  const deleteDimension = (index, item) => {
+    //Filter the item out from the array
+    DimensionsDetails.filter((item) => item !== DimensionsDetails[index]);
+    //Update the state of the checkbox to true or false based off the value of the checkbox
+    setCheckDim((current) => {
+      // Set data as an object with the target value
+      const data = { ...current, [item]: false };
+      //Return the data
+      return data;
+    });
+    setDisDim((current) => {
+      const data = { ...current, [item]: false };
+      return data;
+    });
+    //Remove the item from the array
+    DimensionsDetails.splice(Dimensions.indexOf(item), 1);
+    Dimensions.splice(Dimensions.indexOf(item), 1);
+    console.log(DimensionsDetails);
+  };
+
+  const deleteWarranty = (index, item) => {
+    //Filter the item out from the array
+    WarrantyDetails.filter((item) => item !== WarrantyDetails[index]);
+    //Update the state of the checkbox to true or false based off the value of the checkbox
+    setCheckWarr((current) => {
+      // Set data as an object with the target value
+      const data = { ...current, [item]: false };
+      //Return the data
+      return data;
+    });
+    setDisWarr((current) => {
+      const data = { ...current, [item]: false };
+      return data;
+    });
+    //Remove the item from the array
+    WarrantyDetails.splice(Warranty.indexOf(item), 1);
+    Warranty.splice(Warranty.indexOf(item), 1);
+    console.log(WarrantyDetails);
+    console.log(featuresDetails);
+  };
+
+  useEffect(() => {
+    setFeaturesList(
+      "[" +
+        Material.toString() +
+        "]" +
+        ";" +
+        "[" +
+        Dimensions.toString() +
+        "]" +
+        ";" +
+        "[" +
+        Warranty.toString() +
+        "]"
+    );
+    setFeaturesDetails(
+      "[" +
+        MaterialDetails.toString() +
+        "]" +
+        ";" +
+        "[" +
+        DimensionsDetails.toString() +
+        "]" +
+        ";" +
+        "[" +
+        WarrantyDetails.toString() +
+        "]"
+    );
+    console.log(featuresList);
+    console.log(featuresDetails);
+    console.log(checkMaterial);
+  });
+
   return (
-    <div style={{ textAlign: "center" }}>
-      <Box>
-        <FormControl id="furnitureName" isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({ ...furniture, furnitureName: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="furnitureDescription" isRequired>
-          <FormLabel>Description</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({
-                ...furniture,
-                furnitureDescription: e.target.value,
-              })
-            }
-          />
-        </FormControl>
-        <FormControl id="ogCost" isRequired>
-          <FormLabel>Original Cost</FormLabel>
-          <Input
-            type="number"
-            onChange={(e) =>
-              setFurniture({ ...furniture, ogCost: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="discCost">
-          <FormLabel>Discounted Cost</FormLabel>
-          <Input
-            type="number"
-            onChange={(e) =>
-              setFurniture({ ...furniture, discCost: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="model" isRequired>
-          <FormLabel>Model</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({ ...furniture, model: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="image" isRequired>
-          <FormLabel>Image</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({ ...furniture, image: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="video">
-          <FormLabel>Video</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({ ...furniture, video: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="material" isRequired>
-          <FormLabel>Material</FormLabel>
-          <Input
-            type="text"
-            onChange={(e) =>
-              setFurniture({ ...furniture, material: e.target.value })
-            }
-          />
-        </FormControl>
-        <FormControl id="category" isRequired>
-          <FormLabel>Category</FormLabel>
-          <RadioGroup onChange={setCategory} value={category}>
-            <Stack direction="row">
-              <Radio value="Sofa">Sofa</Radio>
-              <Radio value="Bed">Bed</Radio>
-              <Radio value="Table">Table</Radio>
-              <Radio value="Chair">Chair</Radio>
-              <Radio value="Storage">Storage</Radio>
-            </Stack>
-          </RadioGroup>
-        </FormControl>
-        <FormControl id="features" isRequired>
-          <FormLabel>Features</FormLabel>
-          <Stack direction="row" spacing={5}>
-            <Box borderWidth="1px" borderRadius="lg">
-              <Heading size="xl">Product Material and Care</Heading>
-              <CheckboxGroup></CheckboxGroup>
-              <Stack spacing={2} direction="column">
-                <Checkbox value="Material" onChange={handleMaterials}>
-                  Material
-                </Checkbox>
-                <Checkbox value="Finish" onChange={handleMaterials}>
-                  Finish
-                </Checkbox>
-                <Checkbox value="Hardware Feature" onChange={handleMaterials}>
-                  Hardware Feature
-                </Checkbox>
-                <Checkbox value="Door Mechanism" onChange={handleMaterials}>
-                  Door Mechanism
-                </Checkbox>
-                <Checkbox value="Care" onChange={handleMaterials}>
-                  Care
-                </Checkbox>
-                <Checkbox value="Colour Variance" onChange={handleMaterials}>
-                  Colour Variance
-                </Checkbox>
-                <Checkbox value="Leg Frame" onChange={handleMaterials}>
-                  Leg Frame
-                </Checkbox>
-                <Checkbox value="Saftey Tip" onChange={handleMaterials}>
-                  Saftey Tip
-                </Checkbox>
-                <Checkbox value="Table Top" onChange={handleMaterials}>
-                  Table Top
-                </Checkbox>
-                <Checkbox value="Bed Slats" onChange={handleMaterials}>
-                  Bed Slats
-                </Checkbox>
-                <Checkbox value="Fabric Composition" onChange={handleMaterials}>
-                  Fabric Composition
-                </Checkbox>
-                <Checkbox value="Filling" onChange={handleMaterials}>
-                  Filling
-                </Checkbox>
-                <Checkbox value="Suspension" onChange={handleMaterials}>
-                  Suspension
-                </Checkbox>
-                <Checkbox value="Cover Type" onChange={handleMaterials}>
-                  Cover Type
-                </Checkbox>
-                <Checkbox value="Special Feature" onChange={handleMaterials}>
-                  Special Feature
-                </Checkbox>
-                <Checkbox value="Frame" onChange={handleMaterials}>
-                  Frame
-                </Checkbox>
-                <Checkbox value="Base" onChange={handleMaterials}>
-                  Base
-                </Checkbox>
-                <Checkbox value="Disclaimer" onChange={handleMaterials}>
-                  Disclaimer
-                </Checkbox>
-                <Checkbox value="Cushion" onChange={handleMaterials}>
-                  Cushion
-                </Checkbox>
-              </Stack>
-            </Box>
-            <Box borderWidth="1px" borderRadius="lg">
-              <Heading size="xl">Product Dimensions</Heading>
-              <Stack spacing={2} direction="column">
-                <Checkbox value="Dimension" onChange={handleDimensions}>
-                  Dimension
-                </Checkbox>
-                <Checkbox value="Seatable Width" onChange={handleDimensions}>
-                  Seatable Width
-                </Checkbox>
-                <Checkbox value="Seating Depth" onChange={handleDimensions}>
-                  Seating Depth
-                </Checkbox>
-                <Checkbox value="Seating Height" onChange={handleDimensions}>
-                  Seating Height
-                </Checkbox>
-                <Checkbox value="BackRest Height" onChange={handleDimensions}>
-                  BackRest Height
-                </Checkbox>
-                <Checkbox value="Armrest Height" onChange={handleDimensions}>
-                  Armrest Height
-                </Checkbox>
-                <Checkbox
-                  value="Packaging Dimensions"
-                  onChange={handleDimensions}
-                >
-                  Packaging Dimensions
-                </Checkbox>
-                <Checkbox value="Leg Height" onChange={handleDimensions}>
-                  Leg Height
-                </Checkbox>
-                <Checkbox value="Product Weight" onChange={handleDimensions}>
-                  Product Weight
-                </Checkbox>
-                <Checkbox
-                  value="Max Bearing Support"
-                  onChange={handleDimensions}
-                >
-                  Max Bearing Support
-                </Checkbox>
-                <Checkbox
-                  value="Leg Room - Height Clearance"
-                  onChange={handleDimensions}
-                >
-                  Leg Room - Height Clearance
-                </Checkbox>
-                <Checkbox
-                  value="Leg to Leg Distance"
-                  onChange={handleDimensions}
-                >
-                  Leg to Leg Distance
-                </Checkbox>
-                <Checkbox value="Capacity" onChange={handleDimensions}>
-                  Capacity
-                </Checkbox>
-                <Checkbox value="Levellers" onChange={handleDimensions}>
-                  Levellers
-                </Checkbox>
-                <Checkbox
-                  value="Slat to Slat Distance"
-                  onChange={handleDimensions}
-                >
-                  Slat to Slat Distance
-                </Checkbox>
-                <Checkbox
-                  value="Recommended Mattress Thickness"
-                  onChange={handleDimensions}
-                >
-                  Recommended Matress Thickness
-                </Checkbox>
-                <Checkbox value="Frame Height" onChange={handleDimensions}>
-                  Frame Height
-                </Checkbox>
-                <Checkbox value="Slat Height" onChange={handleDimensions}>
-                  Slat Height
-                </Checkbox>
-                <Checkbox
-                  value="Mattress Space Dimension"
-                  onChange={handleDimensions}
-                >
-                  Matress Space Dimension
-                </Checkbox>
-                <Checkbox
-                  value="Mattress Space Dimension"
-                  onChange={handleDimensions}
-                >
-                  Matress Space Dimension
-                </Checkbox>
-              </Stack>
-            </Box>
-            <Box borderWidth="1px" borderRadius="lg">
-              <Heading size="xl">Delivery and Warranty</Heading>
-              <Stack spacing={2} direction="column">
-                <Checkbox value="Cancellation" onChange={handleWarranty}>
-                  Cancellation
-                </Checkbox>
-                <Checkbox value="Warranty" onChange={handleWarranty}>
-                  Warranty
-                </Checkbox>
-                <Checkbox value="Return Policy" onChange={handleWarranty}>
-                  Return Policy
-                </Checkbox>
-                <Checkbox value="Assembly" onChange={handleWarranty}>
-                  Assembly
-                </Checkbox>
-              </Stack>
-            </Box>
+    <Box mt="20" mx="10" mb="-1">
+      <FormControl id="furnitureName" isRequired>
+        <FormLabel>Name</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({ ...furniture, furnitureName: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="furnitureDescription" isRequired>
+        <FormLabel>Description</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({
+              ...furniture,
+              furnitureDescription: e.target.value,
+            })
+          }
+        />
+      </FormControl>
+      <FormControl id="ogCost" isRequired>
+        <FormLabel>Original Cost</FormLabel>
+        <Input
+          type="number"
+          onChange={(e) =>
+            setFurniture({ ...furniture, ogCost: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="discCost">
+        <FormLabel>Discounted Cost</FormLabel>
+        <Input
+          type="number"
+          onChange={(e) =>
+            setFurniture({ ...furniture, discCost: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="model" isRequired>
+        <FormLabel>Model</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({ ...furniture, model: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="image" isRequired>
+        <FormLabel>Image</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({ ...furniture, image: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="video">
+        <FormLabel>Video</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({ ...furniture, video: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="material" isRequired>
+        <FormLabel>Material</FormLabel>
+        <Input
+          type="text"
+          onChange={(e) =>
+            setFurniture({ ...furniture, material: e.target.value })
+          }
+        />
+      </FormControl>
+      <FormControl id="category" isRequired>
+        <FormLabel>Category</FormLabel>
+        <RadioGroup onChange={setCategory} value={category}>
+          <Stack direction="row">
+            <Radio value="Sofa">Sofa</Radio>
+            <Radio value="Bed">Bed</Radio>
+            <Radio value="Table">Table</Radio>
+            <Radio value="Chair">Chair</Radio>
+            <Radio value="Storage">Storage</Radio>
           </Stack>
-        </FormControl>
-        <Heading size="2xl">Features Details</Heading>
+        </RadioGroup>
+      </FormControl>
+      <FormControl id="features" isRequired>
+        <FormLabel>Features</FormLabel>
         <Stack direction="row" spacing={5}>
-          <Box border={1} borderRadius={8} p={4}>
+          <Box borderWidth="1px" borderRadius="lg">
             <Heading size="xl">Product Material and Care</Heading>
-            {Material.map((item, i) => (
-              <Container key={i} maxW="container.sm">
-                <Text mb="8px">{item}</Text>
-                <Input
-                  onChangeCapture={(e) => {
-                    handleMaterialDetails(i, e, item);
-                  }}
-                  size="md"
-                />
-              </Container>
-            ))}
-          </Box>
-          <Box border={1} borderRadius={8} p={4}>
-            <Heading size="xl">Product Dimensions</Heading>
-            {Dimensions.map((item, i) => (
-              <Container key={i} maxW="2xl">
-                <Text mb="8px">{item}</Text>
-                <Input
+            <Stack spacing={2} direction="column">
+              {MatNames.map((item, i) => (
+                <Checkbox
+                  value={item}
                   onChange={(e) => {
-                    handleDimensionsDetails(i, e);
+                    handleMaterials(e, i);
                   }}
-                  size="md"
-                />
-              </Container>
-            ))}
+                  key={i}
+                  isChecked={checkMaterial[item]}
+                  isDisabled={disMat[item]}
+                >
+                  {item}
+                </Checkbox>
+              ))}
+            </Stack>
           </Box>
-          <Box border={1} borderRadius={8} p={4}>
+          <Box borderWidth="1px" borderRadius="lg">
+            <Heading size="xl">Product Dimensions</Heading>
+            <Stack spacing={2} direction="column">
+              {DimNames.map((item, i) => (
+                <Checkbox
+                  value={item}
+                  onChange={handleDimensions}
+                  key={i}
+                  isChecked={checkDim[item]}
+                  isDisabled={disDim[item]}
+                >
+                  {item}
+                </Checkbox>
+              ))}
+            </Stack>
+          </Box>
+          <Box borderWidth="1px" borderRadius="lg">
             <Heading size="xl">Delivery and Warranty</Heading>
-            {Warranty.map((item, i) => (
-              <Container key={i} maxW="2xl">
+            <Stack spacing={2} direction="column">
+              {WarrName.map((item, i) => (
+                <Checkbox
+                  value={item}
+                  onChange={handleWarranty}
+                  key={i}
+                  isChecked={checkWarr[item]}
+                  isDisabled={disWarr[item]}
+                >
+                  {item}
+                </Checkbox>
+              ))}
+            </Stack>
+          </Box>
+        </Stack>
+      </FormControl>
+      <Heading size="2xl">Features Details</Heading>
+      <Stack direction="row" spacing={5}>
+        <Box border={1} borderRadius={8} p={4}>
+          <Heading size="xl">Product Material and Care</Heading>
+          {Material.map((item, i) => (
+            <Container key={i} maxW="container.sm">
+              <Stack direction="row" spacing={40}>
                 <Text mb="8px">{item}</Text>
+                <IconButton
+                  icon={<DeleteIcon />}
+                  onClick={(e) => {
+                    deleteMaterial(i, item);
+                  }}
+                />
+              </Stack>
+              <Input
+                value={MaterialDetails[i]}
+                onChangeCapture={(e) => {
+                  handleMaterialDetails(i, e, item);
+                }}
+                size="md"
+              />
+            </Container>
+          ))}
+        </Box>
+        <Box border={1} borderRadius={8} p={4}>
+          <Heading size="xl">Product Dimensions</Heading>
+          {Dimensions.map((item, i) => (
+            <Container key={i} maxW="2xl">
+              <Stack direction="row" spacing={40}>
+                <Text mb="8px">{item}</Text>
+                <IconButton
+                  icon={<DeleteIcon />}
+                  onClick={(e) => {
+                    deleteDimension(i, item);
+                  }}
+                />
+              </Stack>
+              <Input
+                value={DimensionsDetails[i]}
+                onChange={(e) => {
+                  handleDimensionsDetails(i, e);
+                }}
+                size="md"
+              />
+            </Container>
+          ))}
+        </Box>
+        <Box border={1} borderRadius={8} p={4}>
+          <Heading size="xl">Delivery and Warranty</Heading>
+          {Warranty.map((item, i) => (
+            <Stack key={i} direction="row" spacing={20}>
+              <Container maxW="2xl">
+                <Stack direction="row" spacing={40}>
+                  <Text mb="8px">{item}</Text>
+                  <IconButton
+                    icon={<DeleteIcon />}
+                    onClick={(e) => {
+                      deleteWarranty(i, item);
+                    }}
+                  />
+                </Stack>
                 <Input
+                  value={WarrantyDetails[i]}
                   onChange={(e) => {
                     handleWarrantyDetails(i, e);
                   }}
                   size="md"
                 />
               </Container>
-            ))}
-          </Box>
-        </Stack>
-        <Button
-          onClick={() => {
-            AddFurniture();
-            AddFeatures();
-          }}
-        >
-          Add Furniture
-        </Button>
-      </Box>
-    </div>
+            </Stack>
+          ))}
+        </Box>
+      </Stack>
+      <Button
+        onClick={() => {
+          AddFurniture();
+          AddFeatures();
+        }}
+      >
+        Add Furniture
+      </Button>
+    </Box>
   );
 };
 
