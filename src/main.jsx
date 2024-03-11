@@ -19,7 +19,7 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/" element={<App />}>
         <Route path="/" element={<Home />} />
-        <Route path="/furniture" element={<Furniture />} />
+        <Route path="/furniture" exact element={<Furniture />} />
         <Route path="/addfurniture" element={<AddFurniture />} />
         <Route path="/*" element={<div>Not Found</div>} />
       </Route>
