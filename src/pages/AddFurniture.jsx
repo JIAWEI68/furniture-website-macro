@@ -18,9 +18,12 @@ import {
   CheckboxGroup,
   Icon,
   IconButton,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { rootUri } from "/apis/api.js";
+import AWS from "aws-sdk";
 
 const AddFurniture = () => {
   const [furniture, setFurniture] = useState({
@@ -35,6 +38,8 @@ const AddFurniture = () => {
     category: "",
   });
   const [category, setCategory] = useState("Sofa");
+  const [imageLink, setImageLink] = useState("");
+  const [videoLink, setVideoLink] = useState("");
   const [Material, setMaterial] = useState([]);
   const [Dimensions, setDimensions] = useState([]);
   const [Warranty, setWarranty] = useState([]);
@@ -109,10 +114,52 @@ const AddFurniture = () => {
   const [disMat, setDisMat] = useState([]);
   const [disDim, setDisDim] = useState([]);
   const [disWarr, setDisWarr] = useState([]);
-  const AddFurniture = async () => {
+  const [fileName, setFileName] = useState("");
+  const [imageFile, setImageFile] = useState([]);
+  const [videoFile, setVideoFile] = useState([]);
+
+  const AddFurnitureAndFeatures = async () => {
+    const s3 = new AWS.S3({
+      accessKeyId: "AKIAW3MD7MJA6ZV5SW63",
+      secretAccessKey: "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",
+      region: "ap-southeast-1",
+    });
+    const imageParams = {
+      Bucket: "aws-macro-bucket",
+      Key: imageFile.name,
+      Body: imageFile,
+    };
+
+    await s3.putObject(imageParams, function (err, data) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(`File uploaded successfully.`);
+    });
+
+    if (videoFile === undefined) {
+      console.log("No video file");
+    } else {
+      const videoParams = {
+        Bucket: "aws-macro-bucket",
+        Key: videoFile.name,
+        Body: videoFile,
+      };
+      await s3.putObject(videoParams, function (err, data) {
+        if (err) {
+          console.log(err);
+        }
+        console.log(`File uploaded successfully.`);
+      });
+      setVideoLink(
+        `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${videoFile.name}`
+      );
+    }
+    const imageLink = `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${imageFile.name}`;
+
     console.log(furniture.furnitureName);
     console.log(category);
-    const response = await fetch(`${rootUri}/furniture`, {
+    const responseFurniture = await fetch(`${rootUri}/furniture`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Required for CORS support to work
@@ -124,17 +171,13 @@ const AddFurniture = () => {
         ogCost: furniture.ogCost,
         discCost: furniture.discCost,
         model: furniture.model,
-        image: furniture.image,
-        video: furniture.video,
+        image: imageLink,
+        video: videoLink,
         material: furniture.material,
         category: category,
       }),
     });
-    const data = await response.json();
-    console.log(data);
-  };
-  const AddFeatures = async () => {
-    const response = await fetch(`${rootUri}/furniture/features`, {
+    const responseFeature = await fetch(`${rootUri}/furniture/features`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json", // Required for CORS support to work
@@ -147,11 +190,11 @@ const AddFurniture = () => {
         featuresDetails: featuresDetails,
       }),
     });
-    const data = await response.json();
-    console.log(data);
-    setMaterialDetails([]);
-    setDimensionsDetails([]);
-    setWarrantyDetails([]);
+    const dataFurniture = await responseFurniture.json();
+    const dataFeature = await responseFeature.json();
+    console.log(dataFurniture);
+    console.log(dataFeature);
+    location.reload();
   };
   const handleMaterials = (e, index) => {
     const exist = Material.includes(e.target.value);
@@ -296,6 +339,16 @@ const AddFurniture = () => {
     console.log(featuresDetails);
   };
 
+  const Image = async (imageFile) => {
+    const dataUri = await fileToDataUri(imageFile);
+    setImageLink(dataUri);
+  };
+
+  const Video = async (imageFile) => {
+    const dataUri = await fileToDataUri(imageFile);
+    setVideoLink(dataUri);
+  };
+
   useEffect(() => {
     setFeaturesList(
       "[" +
@@ -323,13 +376,16 @@ const AddFurniture = () => {
         WarrantyDetails.toString() +
         "]"
     );
-    console.log(featuresList);
-    console.log(featuresDetails);
-    console.log(checkMaterial);
   });
 
   return (
-    <Box mt="20" mx="10" mb="-1">
+    <Box
+      mt="20"
+      mx="10"
+      mb="-1"
+      justifyContent={"center"}
+      alignItems={"center"}
+    >
       <FormControl id="furnitureName" isRequired>
         <FormLabel>Name</FormLabel>
         <Input
@@ -353,21 +409,39 @@ const AddFurniture = () => {
       </FormControl>
       <FormControl id="ogCost" isRequired>
         <FormLabel>Original Cost</FormLabel>
-        <Input
-          type="number"
-          onChange={(e) =>
-            setFurniture({ ...furniture, ogCost: e.target.value })
-          }
-        />
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            color="gray.300"
+            fontSize="1.2em"
+          >
+            $
+          </InputLeftElement>
+          <Input
+            type="number"
+            onChange={(e) =>
+              setFurniture({ ...furniture, ogCost: e.target.value })
+            }
+          />
+        </InputGroup>
       </FormControl>
       <FormControl id="discCost">
         <FormLabel>Discounted Cost</FormLabel>
-        <Input
-          type="number"
-          onChange={(e) =>
-            setFurniture({ ...furniture, discCost: e.target.value })
-          }
-        />
+        <InputGroup>
+          <InputLeftElement
+            pointerEvents="none"
+            color="gray.300"
+            fontSize="1.2em"
+          >
+            $
+          </InputLeftElement>
+          <Input
+            type="number"
+            onChange={(e) =>
+              setFurniture({ ...furniture, discCost: e.target.value })
+            }
+          />
+        </InputGroup>
       </FormControl>
       <FormControl id="model" isRequired>
         <FormLabel>Model</FormLabel>
@@ -380,20 +454,20 @@ const AddFurniture = () => {
       </FormControl>
       <FormControl id="image" isRequired>
         <FormLabel>Image</FormLabel>
-        <Input
-          type="text"
-          onChange={(e) =>
-            setFurniture({ ...furniture, image: e.target.value })
-          }
+        <input
+          type="file"
+          multiple
+          onChange={(e) => {
+            setImageFile(e.target.files[0]);
+          }}
         />
       </FormControl>
       <FormControl id="video">
         <FormLabel>Video</FormLabel>
-        <Input
-          type="text"
-          onChange={(e) =>
-            setFurniture({ ...furniture, video: e.target.value })
-          }
+        <input
+          type="file"
+          multiple
+          onChange={(e) => setVideoFile(e.target.files[0])}
         />
       </FormControl>
       <FormControl id="material" isRequired>
@@ -548,8 +622,7 @@ const AddFurniture = () => {
       </Stack>
       <Button
         onClick={() => {
-          AddFurniture();
-          AddFeatures();
+          AddFurnitureAndFeatures();
         }}
       >
         Add Furniture

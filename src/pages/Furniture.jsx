@@ -13,6 +13,7 @@ import {
   AccordionButton,
   Box,
   AccordionPanel,
+  Container,
 } from "@chakra-ui/react";
 
 import { MinusIcon, AddIcon } from "@chakra-ui/icons";
@@ -24,7 +25,7 @@ const Furniture = () => {
   const [isExpandedDim, setIsExpandedDim] = useState(false);
   const [isExpandedDel, setIsExpandedDel] = useState(false);
   const [Material, setMaterial] = useState(
-    //Remove the first and last character of the string
+    //Remove the first and last character of the string and split it by the comma
     furniture.features.split(";")[0].slice(1, -1).split(",")
   );
   const [MatDetails, setMatDetails] = useState(
@@ -59,9 +60,19 @@ const Furniture = () => {
   }, [furniture]);
 
   return (
-    <Grid mt="20" mx="10" mb="-1" width="100%" templateAreas={`"image text"`}>
+    <Center>
+      <Grid
+      mt="20"
+      mx="10"
+      mb="-1"
+      width="100%"
+      templateAreas={`"image text"`}
+      gap="4"
+      gridTemplateRows={"30px 20px"}
+      gridTemplateColumns={"300px 1fr"}
+    >
       <GridItem area="image">
-        <Image src={furniture.image} />
+        <Image src={furniture.image} width={380} />
       </GridItem>
       <GridItem area="text">
         <Text>{furniture.furnitureName}</Text>
@@ -82,20 +93,32 @@ const Furniture = () => {
               </Box>
               {isExpandedMat ? <MinusIcon /> : <AddIcon />}
             </AccordionButton>
-            <AccordionPanel flex="1" width={100}>
-              <Stack direction={"row"} spacing = {400}>
-                <Stack direction={"column"}>
+            <AccordionPanel width={100}>
+              <Stack direction={"row"} spacing={325}>
+                <Stack direction={"column"} spacing={1}>
                   {Material.map((material) => (
-                    <Center key={material}>
-                      <Text>{material}</Text>
-                    </Center>
+                    <Container maxW="md" key={material}>
+                      <Center>
+                        <Text>{material}</Text>
+                      </Center>
+                    </Container>
                   ))}
                 </Stack>
-                <Stack direction={"column"} justifyContent={"right"}>
+                <Stack
+                  direction={"column"}
+                  margin={"auto"}
+                  marginRight={10}
+                  marginLeft={10}
+                  width={90}
+                  marginTop={0}
+                  spacing={5}
+                >
                   {MatDetails.map((matDetails) => (
-                    <Center key={matDetails}>
-                      <Text>{matDetails}</Text>
-                    </Center>
+                    <Container key={matDetails} maxW="100px">
+                      <Center>
+                        <Text>{matDetails}</Text>
+                      </Center>
+                    </Container>
                   ))}
                 </Stack>
               </Stack>
@@ -108,20 +131,31 @@ const Furniture = () => {
               </Box>
               {isExpandedDim ? <MinusIcon /> : <AddIcon />}
             </AccordionButton>
-            <AccordionPanel width = {100}>
-              <Stack direction={"row"} spacing = {400}>
+            <AccordionPanel width={100}>
+              <Stack direction={"row"} spacing={325}>
                 <Stack direction={"column"}>
                   {Dimensions.map((dimension) => (
-                    <Center key={dimension} flex="1">
-                      <Text>{dimension}</Text>
-                    </Center>
+                    <Container key={dimension} maxW="md">
+                      <Center>
+                        <Text>{dimension}</Text>
+                      </Center>
+                    </Container>
                   ))}
                 </Stack>
-                <Stack direction={"column"} justifyContent={"right"}>
+                <Stack
+                  direction={"column"}
+                  margin={"auto"}
+                  marginRight={10}
+                  marginLeft={10}
+                  marginTop={0}
+                  spacing={5}
+                >
                   {DimDetails.map((dimDetails) => (
-                    <Center key={dimDetails}>
-                      <Text>{dimDetails}</Text>
-                    </Center>
+                    <Container key={dimDetails} maxW="md">
+                      <Center>
+                        <Text>{dimDetails}</Text>
+                      </Center>
+                    </Container>
                   ))}
                 </Stack>
               </Stack>
@@ -134,8 +168,8 @@ const Furniture = () => {
               </Box>
               {isExpandedDel ? <MinusIcon /> : <AddIcon />}
             </AccordionButton>
-            <AccordionPanel width = {100}>
-              <Stack direction={"row"} spacing = {400}>
+            <AccordionPanel width={100}>
+              <Stack direction={"row"} spacing={400}>
                 <Stack direction={"column"}>
                   {Delivery.map((delivery) => (
                     <Center key={delivery}>
@@ -156,6 +190,7 @@ const Furniture = () => {
         </Accordion>
       </GridItem>
     </Grid>
+    </Center>
   );
 };
 export default Furniture;

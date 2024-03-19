@@ -13,14 +13,16 @@ import { ChakraProvider } from "@chakra-ui/react";
 import AddFurniture from "./pages/AddFurniture.jsx";
 import Home from "./pages/Home.jsx";
 import Furniture from "./pages/Furniture.jsx";
+import UpdateFurniture from "./pages/UpdateFurniture.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<App />}>
         <Route path="/" element={<Home />} />
-        <Route path="/furniture" exact element={<Furniture />} />
+        <Route path="/furniture" element={<Furniture />} />
         <Route path="/addfurniture" element={<AddFurniture />} />
+        <Route path="/updatefurniture" element={<UpdateFurniture/>} />
         <Route path="/*" element={<div>Not Found</div>} />
       </Route>
     </Route>

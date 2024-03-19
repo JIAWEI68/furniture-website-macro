@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 const NavBar = () => {
   const [Links, setLinks] = useState([
     { name: "Add Furniture", link: "/addfurniture" },
+    { name: "Update Furniture", link: "/updatefurniture"}
   ]);
   return (
     <Box
