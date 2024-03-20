@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 const NavBar = () => {
   const [Links, setLinks] = useState([
     { name: "Add Furniture", link: "/addfurniture" },
-    { name: "Update Furniture", link: "/updatefurniture"}
+    { name: "Update Furniture", link: "/updatefurniture"},
+    { name: "Register", link: "/register"},
+    { name: "Login", link: "/login"},
   ]);
   return (
     <Box
@@ -23,7 +25,7 @@ const NavBar = () => {
           </Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
-              <NavLink key={link} to={link.link}>
+              <NavLink key={link.name} to={link.link}>
                 {link.name}
               </NavLink>
             ))}

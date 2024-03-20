@@ -27,6 +27,8 @@ app.route("/furniture/:id").get(FurnitureController.getFurnitureById);
 app.route("/login").post(UserController.login);
 app.route("/register").post(UserController.register);
 app.route("/updateUser/:id").put(UserController.updateUser);
+app.route("/user/:id").get(UserController.getUserById);
+app.route("/user/changePassword/:id").put(UserController.updatePassword);
 
 app.listen(3030, "127.0.0.1");
 console.log("Server running on port 3030");
