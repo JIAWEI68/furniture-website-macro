@@ -28,7 +28,7 @@ const router = createBrowserRouter(
         <Route path="/updatefurniture" element={<UpdateFurniture/>} />
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/user" element={<AccountDetails/>}/>
+        <Route path="/user" element={<AccountDetails />}/>
         <Route path="/*" element={<div>Not Found</div>} />
       </Route>
     </Route>

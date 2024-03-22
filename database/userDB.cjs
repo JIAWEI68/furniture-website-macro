@@ -21,14 +21,14 @@ class userDB {
     firstName,
     lastName,
     email,
-    profilePicture,
+    phoneNumber,
     callback
   ) {
     let sql =
       "UPDATE Foundation.Users SET firstName = ?, lastName = ?, email = ?, phoneNumber = ? WHERE id = ?;";
     return db.query(
       sql,
-      [firstName, lastName, email, profilePicture, id],
+      [firstName, lastName, email, phoneNumber, id],
       callback
     );
   }

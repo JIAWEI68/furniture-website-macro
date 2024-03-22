@@ -22,11 +22,10 @@ app.route("/furniture/features").post(FurnitureController.InsertFurnitureFeature
 app.route("/furniture/updateCost/:id").put(FurnitureController.UpdateCost);
 app.route("/furniture/:id").get(FurnitureController.getFurnitureById);
 
-
 // User route methods
 app.route("/login").post(UserController.login);
 app.route("/register").post(UserController.register);
-app.route("/updateUser/:id").put(UserController.updateUser);
+app.route("/user/updateUser/:id").put(UserController.updateUser);
 app.route("/user/:id").get(UserController.getUserById);
 app.route("/user/changePassword/:id").put(UserController.updatePassword);
 

@@ -2,6 +2,9 @@
 
 const userDB = require("../database/userDB.cjs");
 const bcrypt = require("bcryptjs");
+const window = require("window");
+
+const Window = new window();
 
 let UserDB = new userDB();
 
@@ -10,7 +13,7 @@ function register(req, res) {
     req.body.firstName,
     req.body.lastName,
     req.body.email,
-    bcrypt.hashSync(req.body.password, 10),
+    Window.btoa(req.body.password),
     function (error, result) {
       if (error) {
         res.status(500).send(error);
@@ -29,13 +32,11 @@ function login(request, respond) {
       respond.json(error);
     } else {
       if (result.length > 0) {
-        const hash = result[0].password.toString();
-        let flag = bcrypt.compareSync(password, hash);
-        console.log(flag);
-        if (flag === true) {
+        let hash = Window.atob(result[0].password);
+        if (hash == password) {
           respond.json({ result: "login successful", id: result[0].id });
         } else {
-          respond.json({ result: "incorrect password" });
+          respond.json({ result: "incorrect password"});
         }
       } else {
         respond.json({ result: "incorrect username or password" });
@@ -50,8 +51,7 @@ function updateUser(request, respond) {
     request.body.firstName,
     request.body.lastName,
     request.body.email,
-    request.body.password,
-    request.body.profilePicture,
+    request.body.phoneNumber,
     function (error, result) {
       if (error) {
         respond.status(500).send(err);
@@ -75,7 +75,7 @@ function getUserById(request, respond) {
 function updatePassword(request, respond) {
   UserDB.changePassword(
     parseInt(request.params.id),
-    bcrypt.hashSync(request.body.password, 10),
+    Window.btoa(request.body.password),
     function (error, result) {
       if (error) {
         respond.status(500).send(error);
