@@ -10,11 +10,17 @@ import {
   IconButton,
   Button,
   useToast,
+  Heading,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon, WarningIcon } from "@chakra-ui/icons";
 import { rootUri } from "/apis/api";
 
-const Login = () => {
+const LoginModal = () => {
   const toast = useToast();
   const id = "toast";
   const [email, setEmail] = useState("");
@@ -56,15 +62,15 @@ const Login = () => {
         data.result === "incorrect password" ||
         data.result === "incorrect username or password"
       ) {
-        if(!toast.isActive(id)){
-            toast({
-                title: "Login Failed",
-                id,
-                description: data.result,
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-              });
+        if (!toast.isActive(id)) {
+          toast({
+            title: "Login Failed",
+            id,
+            description: data.result,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
         }
       }
       console.log(data);
@@ -74,34 +80,40 @@ const Login = () => {
   };
 
   return (
-    <Center>
-      <Container mt="20" mx="10" mb="-1" width="100%">
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Input type="email" onChange={(e) => setEmail(e.target.value)} />
-        </FormControl>
-        <FormControl>
-          <FormLabel>Password</FormLabel>
-          <InputGroup>
-            <Input
-              type={show ? "text" : "password"}
-              placeholder="Enter Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <InputRightElement>
-              <IconButton
-                onClick={handleClick}
-                icon={show ? <ViewIcon /> : <ViewOffIcon />}
+    <ModalOverlay>
+      <ModalContent>
+        <Container>
+          <ModalHeader>Welcome</ModalHeader>
+          <ModalCloseButton />
+          <FormControl>
+            <FormLabel>Email</FormLabel>
+            <Input type="email" onChange={(e) => setEmail(e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                type={show ? "text" : "password"}
+                placeholder="Enter Password"
+                onChange={(e) => setPassword(e.target.value)}
               />
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
-        <Center paddingTop={3}>
-          <Button onClick={login}>Login</Button>
-        </Center>
-      </Container>
-    </Center>
+              <InputRightElement>
+                <IconButton
+                  onClick={handleClick}
+                  icon={show ? <ViewIcon /> : <ViewOffIcon />}
+                />
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          <ModalFooter justifyContent={"center"}>
+            <Center paddingTop={3}>
+              <Button onClick={login}>Login</Button>
+            </Center>
+          </ModalFooter>
+        </Container>
+      </ModalContent>
+    </ModalOverlay>
   );
 };
 
-export default Login;
+export default LoginModal;

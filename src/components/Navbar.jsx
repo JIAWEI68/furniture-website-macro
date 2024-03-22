@@ -1,14 +1,17 @@
-import { Box, HStack, useColorModeValue, Flex, Spacer } from "@chakra-ui/react";
+import { Box, HStack, useColorModeValue, Flex, Spacer, useDisclosure, Modal, IconButton } from "@chakra-ui/react";
 import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { CiUser } from "react-icons/ci";
+import LoginModal from "./LoginModal";
+
 
 const NavBar = () => {
   const [Links, setLinks] = useState([
-    { name: "Add Furniture", link: "/addfurniture" },
-    { name: "Update Furniture", link: "/updatefurniture"},
-    { name: "Register", link: "/register"},
-    { name: "Login", link: "/login"},
+    { name: "Register", link: "/register" }
   ]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Box
       bg={useColorModeValue("gray.100", "gray.900")}
@@ -31,7 +34,13 @@ const NavBar = () => {
             ))}
           </HStack>
         </HStack>
+        <Flex alignItems={"center"}>
+          <IconButton icon={<CiUser/>} borderRadius={0} background={"none"} onClick={onOpen}/>
+        </Flex>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
+           <LoginModal/>   
+      </Modal>
     </Box>
   );
 };
