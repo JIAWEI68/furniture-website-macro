@@ -61,7 +61,9 @@ const Home = () => {
                   <Link to={"/furniture"} state={furniture}>
                     {furniture.furnitureName}
                   </Link>
-                  <Text>${furniture.ogCost}</Text>
+                  <Center>
+                    <Text>${furniture.ogCost}</Text>
+                  </Center>
                 </Box>
               );
             }

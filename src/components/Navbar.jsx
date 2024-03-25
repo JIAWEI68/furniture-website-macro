@@ -2,7 +2,7 @@ import { Box, HStack, useColorModeValue, Flex, Spacer, useDisclosure, Modal, Ico
 import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CiUser } from "react-icons/ci";
-import LoginModal from "./LoginModal";
+import LoginAndRegisterModal from "./LoginAndRegisterModal";
 
 
 const NavBar = () => {
@@ -35,11 +35,14 @@ const NavBar = () => {
           </HStack>
         </HStack>
         <Flex alignItems={"center"}>
-          <IconButton icon={<CiUser/>} borderRadius={0} background={"none"} onClick={onOpen}/>
+          <IconButton icon={<CiUser />} borderRadius={0} background={"none"} onClick={onOpen} _hover={"none"}
+            _active={{
+              background: "none"
+            }} />
         </Flex>
       </Flex>
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="xl">
-           <LoginModal/>   
+        <LoginAndRegisterModal />
       </Modal>
     </Box>
   );

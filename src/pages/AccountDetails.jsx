@@ -131,6 +131,7 @@ const AccountDetails = () => {
     const id = sessionStorage.getItem("id");
     getUser(id);
     console.log(user)
+    console.log(phoneNumber)
   }, []);
 
   return (
@@ -173,8 +174,8 @@ const AccountDetails = () => {
                 <Text>First Name</Text>
                 <Input
                   type="name"
-                  defaultValue={user.firstName === null ? "" : user.firstName}
-                  onChange={(e) => firstName === null ? setfirstName(user.firstName) : setfirstName(e.target.value)}
+                  defaultValue={user.firstName === "" ? "" : user.firstName}
+                  onChange={(e) => firstName === "" ? setfirstName(user.firstName) : setfirstName(e.target.value)}
                   variant="flushed"
                 />
               </Box>
@@ -182,8 +183,8 @@ const AccountDetails = () => {
                 <Text>Last Name</Text>
                 <Input
                   type="name"
-                  defaultValue={user.lastName === null ? "" : user.lastName}
-                  onChange={(e) => lastName === null ? setlastName(user.lastName) : setlastName(e.target.value)}
+                  defaultValue={user.lastName === "" ? "" : user.lastName}
+                  onChange={(e) => lastName === "" ? setlastName(user.lastName) : setlastName(e.target.value)}
                   variant="flushed"
                 />
               </Box>
@@ -191,8 +192,8 @@ const AccountDetails = () => {
                 <Text>Email</Text>
                 <Input
                   type="email"
-                  defaultValue={user.email === null ? "" : user.email}
-                  onChange={(e) => email === null ? setEmail(user.email) : setEmail(e.target.value)}
+                  defaultValue={user.email === "" ? "" : user.email}
+                  onChange={(e) => email === "" ? setEmail(user.email) : setEmail(e.target.value)}
                   variant="flushed"
                 />
               </Box>
@@ -200,8 +201,8 @@ const AccountDetails = () => {
                 <Text>Phone Number</Text>
                 <Input
                   type="tel"
-                  defaultValue={user.phoneNumber === null ? "" : user.phoneNumber}
-                  onChange={(e) => phoneNumber === null ? setPhoneNumber(user.phoneNumber) : setPhoneNumber(e.target.value)}
+                  defaultValue={user.phoneNumber === "" ? "" : user.phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   variant="flushed"
                 />
               </Box>
