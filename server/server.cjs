@@ -12,7 +12,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(cors());
 
 app.route("/furniture").get(FurnitureController.getAllFurniture);
-app.route("/furniture/sofa").get(FurnitureController.getAllSofas);
+app.route("/furniture/:category").get(FurnitureController.getFurnitureByCategories);
 // app.route("/furniture/bed").get(FurnitureController.getAllBeds);
 // app.route("/furniture/table").get(FurnitureController.getAllTables);
 // app.route("/furniture/chair").get(FurnitureController.getAllChairs);

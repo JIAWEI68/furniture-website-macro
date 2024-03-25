@@ -7,10 +7,17 @@ import LoginAndRegisterModal from "./LoginAndRegisterModal";
 
 const NavBar = () => {
   const [Links, setLinks] = useState([
-    { name: "Register", link: "/register" }
+    { name: "Sofa", link: "/Sofa" },
+    { name: "Bed", link: "/Bed" },
+    { name: "Table", link: "/Table" },
+    { name: "Chair", link: "/Chair" }
   ]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const changeLink = (link) => { 
+    window.location.href = link;
+  }
 
   return (
     <Box
@@ -23,12 +30,12 @@ const NavBar = () => {
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <HStack spacing={8} alignItems={"center"}>
-          <Box>
+          <Box paddingLeft={5}>
             <Link to="/">MacroWebsite</Link>
           </Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
-              <NavLink key={link.name} to={link.link}>
+              <NavLink key={link.name} to={link.link} onClick={()=>changeLink(link.link)}>
                 {link.name}
               </NavLink>
             ))}

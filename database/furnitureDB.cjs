@@ -13,10 +13,10 @@ class FurnitureDB {
       "SELECT A.id, A.furnitureName, A.furnitureDescription, A.ogCost, A.discCost, A.model, A.image, A.video, A.material, A.category, A.createdDate, B.featuresCategory, B.features, B.featuresDetails FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id AND A.id = ?";
     db.query(sql, [id], callback);
   }
-  getSofas(callback) {
+  getFurnitureByCategories(category, callback) {
     let sql =
-      "SELECT * FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id AND A.category = 'Sofa'";
-    db.query(sql, callback);
+      "SELECT * FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id AND A.category = ?";
+    db.query(sql, [category], callback);
   }
   InsertFurniture(
     furnitureName,

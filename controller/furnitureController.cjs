@@ -24,8 +24,10 @@ function getFurnitureById(req, res) {
   });
 }
 
-function getAllSofas(req, res) {
-  FurnitureDB.getSofas((err, result) => {
+function getFurnitureByCategories(req, res) {
+  FurnitureDB.getFurnitureByCategories(
+    req.params.category,
+    (err, result) => {
     if (err) {
       res.status(500).send(err);
     } else {
@@ -85,7 +87,7 @@ function UpdateCost(req, res) {
 
 module.exports = {
   getAllFurniture,
-  getAllSofas,
+  getFurnitureByCategories,
   InsertFurniture,
   InsertFurnitureFeatures,
   UpdateCost,

@@ -16,6 +16,7 @@ import Furniture from "./pages/Furniture.jsx";
 import UpdateFurniture from "./pages/UpdateFurniture.jsx";
 import Register from "./pages/Register.jsx";
 import AccountDetails from "./pages/AccountDetails.jsx";
+import FurnitureCategories from "./pages/FurnitureCategories.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,9 +25,10 @@ const router = createBrowserRouter(
         <Route path="/" element={<Home />} />
         <Route path="/furniture" element={<Furniture />} />
         <Route path="/addfurniture" element={<AddFurniture />} />
-        <Route path="/updatefurniture" element={<UpdateFurniture/>} />
-        <Route path="/register" element={<Register/>}/>
-        <Route path="/user" element={<AccountDetails />}/>
+        <Route path="/updatefurniture" element={<UpdateFurniture />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/user" element={<AccountDetails />} />
+        <Route exact path="/:categories" element={<FurnitureCategories />} render={() => <FurnitureCategories />} />
         <Route path="/*" element={<div>Not Found</div>} />
       </Route>
     </Route>
