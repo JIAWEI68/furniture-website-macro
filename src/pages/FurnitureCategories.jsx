@@ -8,13 +8,14 @@ import {
     Stack,
     AspectRatio,
   } from "@chakra-ui/react";
-  import { useState, useEffect, componentDidUpdate } from "react";
+  import { useState, useEffect } from "react";
   import { rootUri } from "/apis/api.js";
   import { Link, useLocation, } from "react-router-dom";
   
   const FurnitureCategories = () => {
     const [furniture, setFurniture] = useState([]);
-    const [categories, setCateories] = useState(window.location.pathname.split("/")[1]);
+    const location = useLocation();
+    const [categories, setCategories] = useState("");
     const [loading, setLoading] = useState(false);
     const fetchFurniture = async (category) => {
       try {
@@ -29,10 +30,11 @@ import {
   
     //Update the data when the category changes
     useEffect(() => {
+      const categories = location.state;
       fetchFurniture(categories);
       console.log(furniture);
       console.log(categories);
-    }, [categories]);
+    }, [location]);
 
     return (
       <Center>

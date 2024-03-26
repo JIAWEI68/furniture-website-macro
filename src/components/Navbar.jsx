@@ -1,5 +1,5 @@
 import { Box, HStack, useColorModeValue, Flex, Spacer, useDisclosure, Modal, IconButton } from "@chakra-ui/react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CiUser } from "react-icons/ci";
 import LoginAndRegisterModal from "./LoginAndRegisterModal";
@@ -14,10 +14,6 @@ const NavBar = () => {
   ]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const changeLink = (link) => { 
-    window.location.href = link;
-  }
 
   return (
     <Box
@@ -35,7 +31,7 @@ const NavBar = () => {
           </Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
-              <NavLink key={link.name} to={link.link} onClick={()=>changeLink(link.link)}>
+              <NavLink key={link.name} to={link.link} state={link.name}>
                 {link.name}
               </NavLink>
             ))}
