@@ -59,6 +59,7 @@ const LoginAndRegisterModal = () => {
       const data = await result.json();
       if (data.result === "login successful") {
         sessionStorage.setItem("id", data.id);
+        sessionStorage.setItem("roles", data.roles)
         if (!toast.isActive(id)) {
           toast({
             title: "Login Successful",

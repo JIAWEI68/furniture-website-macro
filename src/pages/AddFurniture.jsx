@@ -20,6 +20,7 @@ import {
   IconButton,
   InputGroup,
   InputLeftElement,
+  Center,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { rootUri } from "/apis/api.js";
@@ -45,16 +46,16 @@ const AddFurniture = () => {
   const [Warranty, setWarranty] = useState([]);
   const [featuresList, setFeaturesList] = useState(
     "[" +
-      Material.toString() +
-      "]" +
-      ";" +
-      "[" +
-      Dimensions.toString() +
-      "]" +
-      ";" +
-      "[" +
-      Warranty.toString() +
-      "]"
+    Material.toString() +
+    "]" +
+    ";" +
+    "[" +
+    Dimensions.toString() +
+    "]" +
+    ";" +
+    "[" +
+    Warranty.toString() +
+    "]"
   );
   const [MaterialDetails, setMaterialDetails] = useState([]);
   const [DimensionsDetails, setDimensionsDetails] = useState([]);
@@ -352,29 +353,29 @@ const AddFurniture = () => {
   useEffect(() => {
     setFeaturesList(
       "[" +
-        Material.toString() +
-        "]" +
-        ";" +
-        "[" +
-        Dimensions.toString() +
-        "]" +
-        ";" +
-        "[" +
-        Warranty.toString() +
-        "]"
+      Material.toString() +
+      "]" +
+      ";" +
+      "[" +
+      Dimensions.toString() +
+      "]" +
+      ";" +
+      "[" +
+      Warranty.toString() +
+      "]"
     );
     setFeaturesDetails(
       "[" +
-        MaterialDetails.toString() +
-        "]" +
-        ";" +
-        "[" +
-        DimensionsDetails.toString() +
-        "]" +
-        ";" +
-        "[" +
-        WarrantyDetails.toString() +
-        "]"
+      MaterialDetails.toString() +
+      "]" +
+      ";" +
+      "[" +
+      DimensionsDetails.toString() +
+      "]" +
+      ";" +
+      "[" +
+      WarrantyDetails.toString() +
+      "]"
     );
   });
 
@@ -548,10 +549,10 @@ const AddFurniture = () => {
       </FormControl>
       <Heading size="2xl">Features Details</Heading>
       <Stack direction="row" spacing={5}>
-        <Box border={1} borderRadius={8} p={4}>
+        <Box border={1} borderRadius={8} p={4} paddingLeft={0}>
           <Heading size="xl">Product Material and Care</Heading>
           {Material.map((item, i) => (
-            <Container key={i} maxW="container.sm">
+            <Container key={i} maxW="container.sm" paddingLeft={0}>
               <Stack direction="row" spacing={40}>
                 <Text mb="8px">{item}</Text>
                 <IconButton
@@ -574,7 +575,7 @@ const AddFurniture = () => {
         <Box border={1} borderRadius={8} p={4}>
           <Heading size="xl">Product Dimensions</Heading>
           {Dimensions.map((item, i) => (
-            <Container key={i} maxW="2xl">
+            <Container key={i} maxW="2xl" paddingLeft={0}>
               <Stack direction="row" spacing={40}>
                 <Text mb="8px">{item}</Text>
                 <IconButton
@@ -598,7 +599,7 @@ const AddFurniture = () => {
           <Heading size="xl">Delivery and Warranty</Heading>
           {Warranty.map((item, i) => (
             <Stack key={i} direction="row" spacing={20}>
-              <Container maxW="2xl">
+              <Container maxW="2xl" paddingLeft={0}>
                 <Stack direction="row" spacing={40}>
                   <Text mb="8px">{item}</Text>
                   <IconButton
@@ -620,13 +621,15 @@ const AddFurniture = () => {
           ))}
         </Box>
       </Stack>
-      <Button
-        onClick={() => {
-          AddFurnitureAndFeatures();
-        }}
-      >
-        Add Furniture
-      </Button>
+      <Center>
+        <Button
+          onClick={() => {
+            AddFurnitureAndFeatures();
+          }}
+        >
+          Add Furniture
+        </Button>
+      </Center>
     </Box>
   );
 };

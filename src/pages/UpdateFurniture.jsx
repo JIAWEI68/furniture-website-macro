@@ -13,10 +13,12 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const UpdateFurniture = () => {
   const [furniture, setFurniture] = useState([]);
   const [discCost, setDisCost] = useState();
+  const navigate = useNavigate();
   const fetchAllFurniture = async () => {
     try {
       const result = await fetch(`${rootUri}/furniture`);
@@ -43,7 +45,7 @@ const UpdateFurniture = () => {
     } catch (err) {
       console.error(err);
     }
-    window.location.reload();
+    navigate("/")
   };
   
 

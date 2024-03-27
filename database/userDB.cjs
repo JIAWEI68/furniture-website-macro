@@ -6,13 +6,13 @@ let bcrypt = require("bcryptjs");
 class userDB {
   register(firstName, lastName, email, password, roles, callback) {
     let sql =
-      "INSERT INTO Users (firstName, lastName, email, password) VALUES (?,?,?,?)";
+      "INSERT INTO Users (firstName, lastName, email, password, roles) VALUES (?,?,?,?,?)";
     db.query(sql, [firstName, lastName, email, password, roles], callback);
   }
 
   login(email, callback) {
     let sql =
-      "SELECT id, email, password, firstName, lastName, phoneNumber from Foundation.Users WHERE email = ?";
+      "SELECT id, email, password, firstName, lastName, phoneNumber, roles from Foundation.Users WHERE email = ?";
     db.query(sql, [email], callback);
   }
 

@@ -9,6 +9,7 @@ const Window = new window();
 let UserDB = new userDB();
 
 function register(req, res) {
+  const user = "User";
   UserDB.register(
     req.body.firstName,
     req.body.lastName,
@@ -35,7 +36,7 @@ function login(request, respond) {
       if (result.length > 0) {
         let hash = Window.atob(result[0].password);
         if (hash == password) {
-          respond.json({ result: "login successful", id: result[0].id });
+          respond.json({ result: "login successful", id: result[0].id, roles: result[0].roles});
         } else {
           respond.json({ result: "incorrect password"});
         }

@@ -106,7 +106,7 @@ const NavBar = () => {
             ))}
           </HStack>
         </HStack>
-        <Flex alignItems={"center"}>
+        <Flex alignItems={"center"} paddingRight={100}>
           <IconButton icon={<CiUser />} borderRadius={0} background={"none"} onClick={onOpen} _hover={"none"}
             _active={{
               background: "none"

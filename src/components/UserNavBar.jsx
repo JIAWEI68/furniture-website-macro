@@ -7,7 +7,12 @@ import {
     Popover,
     PopoverTrigger,
     PopoverContent,
+    PopoverHeader,
     PopoverBody,
+    PopoverFooter,
+    PopoverArrow,
+    PopoverCloseButton,
+    PopoverAnchor,
     VStack
 } from "@chakra-ui/react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -19,39 +24,39 @@ import LoginModal from "./LoginAndRegisterModal";
 const UserNavbar = () => {
     const [Links, setLinks] = useState([
         {
-          name: "Sofa", link: "/Sofa", children: [{
-            name: "Sofa1",
-            link: "/Sofa1",
-          }, {
-            name: "Sofa2",
-            link: "/Sofa2",
-          }, {
-            name: "Sofa3",
-            link: "/Sofa3",
-          }]
+            name: "Sofa", link: "/Sofa", children: [{
+                name: "Sofa1",
+                link: "/Sofa1",
+            }, {
+                name: "Sofa2",
+                link: "/Sofa2",
+            }, {
+                name: "Sofa3",
+                link: "/Sofa3",
+            }]
         },
         { name: "Bed", link: "/Bed", children: [{ name: "Bed1", link: "/Bed1" }, { name: "Bed2", link: "/Bed2" }, { name: "Bed3", link: "/Bed3" }] },
         {
-          name: "Table", link: "/Table", children: [
-            { name: "Table1", link: "/Table1" },
-            { name: "Table2", link: "/Table2" },
-            { name: "Table3", link: "/Table3" },
-          ]
+            name: "Table", link: "/Table", children: [
+                { name: "Table1", link: "/Table1" },
+                { name: "Table2", link: "/Table2" },
+                { name: "Table3", link: "/Table3" },
+            ]
         },
         {
-          name: "Chair", link: "/Chair", children: [{
-            name: "Chair1",
-            link: "/Chair1",
-          }, {
-            name: "Chair2",
-            link: "/Chair2",
-          }, {
-            name: "Chair3",
-            link: "/Chair3",
-    
-          }]
+            name: "Chair", link: "/Chair", children: [{
+                name: "Chair1",
+                link: "/Chair1",
+            }, {
+                name: "Chair2",
+                link: "/Chair2",
+            }, {
+                name: "Chair3",
+                link: "/Chair3",
+
+            }]
         },
-      ]);
+    ]);
     const navigate = useNavigate();
 
     const logOut = async () => {
