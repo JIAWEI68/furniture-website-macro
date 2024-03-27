@@ -118,6 +118,8 @@ const AddFurniture = () => {
   const [fileName, setFileName] = useState("");
   const [imageFile, setImageFile] = useState([]);
   const [videoFile, setVideoFile] = useState([]);
+  const [imageLinks, setImageLinks] = useState([]);
+  const [imageArray, setImageArray] = useState("");
 
   const AddFurnitureAndFeatures = async () => {
     const s3 = new AWS.S3({
@@ -125,18 +127,23 @@ const AddFurniture = () => {
       secretAccessKey: "78xf0881tMDgoNyx/FWGRNOltwIiFdKR0om2QoIu",
       region: "ap-southeast-1",
     });
-    const imageParams = {
-      Bucket: "aws-macro-bucket",
-      Key: imageFile.name,
-      Body: imageFile,
-    };
 
-    await s3.putObject(imageParams, function (err, data) {
-      if (err) {
-        console.log(err);
-      }
-      console.log(`File uploaded successfully.`);
-    });
+    for(let i=0; i<imageFile.length;i++){
+      const imageParams = {
+        Bucket: "aws-macro-bucket",
+        Key: imageFile[i].name,
+        Body: imageFile[i], 
+      };
+      await s3.putObject(imageParams, function (err, data) {
+        if (err) {
+          console.log(err);
+        }
+        console.log(`File uploaded successfully.`);
+      });
+      setImageLinks((image)=>[...image, `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${imageFile.name}`])
+    }
+
+    setImageArray(imageLinks.toString());
 
     if (videoFile === undefined) {
       console.log("No video file");
@@ -156,8 +163,7 @@ const AddFurniture = () => {
         `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${videoFile.name}`
       );
     }
-    const imageLink = `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${imageFile.name}`;
-
+   
     console.log(furniture.furnitureName);
     console.log(category);
     const responseFurniture = await fetch(`${rootUri}/furniture`, {
@@ -172,7 +178,7 @@ const AddFurniture = () => {
         ogCost: furniture.ogCost,
         discCost: furniture.discCost,
         model: furniture.model,
-        image: imageLink,
+        image: imageArray,
         video: videoLink,
         material: furniture.material,
         category: category,
@@ -377,6 +383,7 @@ const AddFurniture = () => {
       WarrantyDetails.toString() +
       "]"
     );
+    console.log(imageFile)
   });
 
   return (
@@ -459,7 +466,7 @@ const AddFurniture = () => {
           type="file"
           multiple
           onChange={(e) => {
-            setImageFile(e.target.files[0]);
+            setImageFile(e.target.files);
           }}
         />
       </FormControl>
@@ -468,7 +475,7 @@ const AddFurniture = () => {
         <input
           type="file"
           multiple
-          onChange={(e) => setVideoFile(e.target.files[0])}
+          onChange={(e) => setVideoFile(e.target.files)}
         />
       </FormControl>
       <FormControl id="material" isRequired>
