@@ -1,4 +1,22 @@
-import { Box, HStack, useColorModeValue, Flex, Spacer, useDisclosure, Modal, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  HStack,
+  useColorModeValue,
+  Flex,
+  Spacer,
+  useDisclosure,
+  Modal,
+  IconButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+} from "@chakra-ui/react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CiUser } from "react-icons/ci";
@@ -7,10 +25,43 @@ import LoginAndRegisterModal from "./LoginAndRegisterModal";
 
 const NavBar = () => {
   const [Links, setLinks] = useState([
+    {
+      name: "Sofa", link: "/Sofa", children: [{
+        name: "Sofa1",
+        link: "/Sofa1",
+      }, {
+        name: "Sofa2",
+        link: "/Sofa2",
+      }, {
+        name: "Sofa3",
+        link: "/Sofa3",
+      }]
+    },
+    { name: "Bed", link: "/Bed", children: [{ name: "Bed1", link: "/Bed1" }, { name: "Bed2", link: "/Bed2" }, { name: "Bed3", link: "/Bed3" }] },
+    {
+      name: "Table", link: "/Table", children: [
+        { name: "Table1", link: "/Table1" },
+        { name: "Table2", link: "/Table2" },
+        { name: "Table3", link: "/Table3" },
+      ]
+    },
+    {
+      name: "Chair", link: "/Chair", children: [{
+        name: "Chair1",
+        link: "/Chair1",
+      }, {
+        name: "Chair2",
+        link: "/Chair2",
+      }, {
+        name: "Chair3",
+        link: "/Chair3",
+
+      }]
+    },
+  ]);
+
+  const [modelLinks, setModelLinks] = useState([
     { name: "Sofa", link: "/Sofa" },
-    { name: "Bed", link: "/Bed" },
-    { name: "Table", link: "/Table" },
-    { name: "Chair", link: "/Chair" }
   ]);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,9 +82,27 @@ const NavBar = () => {
           </Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
-              <NavLink key={link.name} to={link.link} state={link.name}>
-                {link.name}
-              </NavLink>
+              <Box key={link.name}>
+                <Popover trigger={'hover'} matchWidth={true} key={link.name} >
+                  <PopoverTrigger>
+                    <NavLink to={link.link} state={link.name}>
+                      {link.name}
+                    </NavLink>
+                  </PopoverTrigger>
+                  <PopoverContent size="md">
+                    <PopoverHeader fontWeight="bold">{link.name}</PopoverHeader>
+                    {
+                      link.children.map((child) => (
+                        <PopoverBody key={child}>
+                          <Link to={child.link} state={child.name} >
+                            {child.name}
+                          </Link>
+                        </PopoverBody>
+                      ))
+                    }
+                  </PopoverContent>
+                </Popover>
+              </Box>
             ))}
           </HStack>
         </HStack>

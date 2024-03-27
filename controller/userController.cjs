@@ -14,6 +14,7 @@ function register(req, res) {
     req.body.lastName,
     req.body.email,
     Window.btoa(req.body.password),
+    "User",
     function (error, result) {
       if (error) {
         res.status(500).send(error);

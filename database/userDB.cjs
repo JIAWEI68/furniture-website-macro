@@ -4,10 +4,10 @@ let db = require("../server/connection.cjs");
 let bcrypt = require("bcryptjs");
 
 class userDB {
-  register(firstName, lastName, email, password, callback) {
+  register(firstName, lastName, email, password, roles, callback) {
     let sql =
       "INSERT INTO Users (firstName, lastName, email, password) VALUES (?,?,?,?)";
-    db.query(sql, [firstName, lastName, email, password], callback);
+    db.query(sql, [firstName, lastName, email, password, roles], callback);
   }
 
   login(email, callback) {
