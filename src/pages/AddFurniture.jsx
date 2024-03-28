@@ -33,8 +33,6 @@ const AddFurniture = () => {
     ogCost: "",
     discCost: "",
     model: "",
-    image: "",
-    video: "",
     material: "",
     category: "",
   });
@@ -117,6 +115,7 @@ const AddFurniture = () => {
   const [disWarr, setDisWarr] = useState([]);
   const [fileName, setFileName] = useState("");
   const [imageFile, setImageFile] = useState([]);
+  const [thumbnail, setThumbnail] = useState([]);
   const [videoFile, setVideoFile] = useState([]);
   const [imageLinks, setImageLinks] = useState([]);
   const [imageArray, setImageArray] = useState("");
@@ -127,6 +126,20 @@ const AddFurniture = () => {
       secretAccessKey: "78xf0881tMDgoNyx/FWGRNOltwIiFdKR0om2QoIu",
       region: "ap-southeast-1",
     });
+
+    const thumbnailParams = {
+      Bucket: "aws-macro-bucket",
+      Key: thumbnail.name,
+      Body: thumbnail
+    }
+
+    await s3.putObject(thumbnailParams, function (err, data) {
+      if (err) {
+        console.log(err);
+      }
+      console.log(`File uploaded successfully.`);
+    });
+    const thumbnailLink = `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${thumbnail.name}`;
 
     for(let i=0; i<imageFile.length;i++){
       const imageParams = {
@@ -140,28 +153,30 @@ const AddFurniture = () => {
         }
         console.log(`File uploaded successfully.`);
       });
-      setImageLinks((image)=>[...image, `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${imageFile.name}`])
+      setImageLinks((image)=>[...image, `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${imageFile[i].name}`])
     }
 
     setImageArray(imageLinks.toString());
 
-    if (videoFile === undefined) {
+    if (videoFile.length === 0) {
       console.log("No video file");
     } else {
-      const videoParams = {
-        Bucket: "aws-macro-bucket",
-        Key: videoFile.name,
-        Body: videoFile,
-      };
-      await s3.putObject(videoParams, function (err, data) {
-        if (err) {
-          console.log(err);
-        }
-        console.log(`File uploaded successfully.`);
-      });
-      setVideoLink(
-        `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${videoFile.name}`
-      );
+      for (let i=0; i<videoFile.length; i++){
+        const videoParams = {
+          Bucket: "aws-macro-bucket",
+          Key: videoFile[i].name,
+          Body: videoFile[i], 
+        };
+        await s3.putObject(videoParams, function (err, data) {
+          if (err) {
+            console.log(err);
+          }
+          console.log(`File uploaded successfully.`);
+        });
+        setVideoLink((video)=>
+          [...video, `https://aws-macro-bucket.s3.ap-southeast-1.amazonaws.com/${videoFile[i].name}`]
+        );
+      }
     }
    
     console.log(furniture.furnitureName);
@@ -178,10 +193,11 @@ const AddFurniture = () => {
         ogCost: furniture.ogCost,
         discCost: furniture.discCost,
         model: furniture.model,
-        image: imageArray,
-        video: videoLink,
+        thumbnail: thumbnailLink,
+        image: imageLinks.toString(),
+        video: videoLink.toString(),
         material: furniture.material,
-        category: category,
+        category: category
       }),
     });
     const responseFeature = await fetch(`${rootUri}/furniture/features`, {
@@ -384,6 +400,7 @@ const AddFurniture = () => {
       "]"
     );
     console.log(imageFile)
+    console.log(imageLinks)
   });
 
   return (
@@ -460,8 +477,17 @@ const AddFurniture = () => {
           }
         />
       </FormControl>
+      <FormControl id="thumbnail" isRequired>
+        <FormLabel>Thumbnail Image</FormLabel>
+        <input
+          type="file"
+          onChange={(e) => {
+            setThumbnail(e.target.files[0]);
+          }}
+        />
+      </FormControl>
       <FormControl id="image" isRequired>
-        <FormLabel>Image</FormLabel>
+        <FormLabel>Description Images</FormLabel>
         <input
           type="file"
           multiple

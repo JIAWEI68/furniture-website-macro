@@ -14,13 +14,17 @@ import {
   Box,
   AccordionPanel,
   Container,
+  IconButton,
+  useBreakpointValue
 } from "@chakra-ui/react";
-
-import { MinusIcon, AddIcon } from "@chakra-ui/icons";
+import { MinusIcon, AddIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
+import Slider from "react-slick";
 
 const Furniture = () => {
   const location = useLocation();
   const [furniture, setFurniture] = useState(location.state);
+  const [imageList, setImageList] = useState(furniture.image.split(","));
+  const [slider, setSlider] = useState(null)
   const [isExpandedMat, setIsExpandedMat] = useState(false);
   const [isExpandedDim, setIsExpandedDim] = useState(false);
   const [isExpandedDel, setIsExpandedDel] = useState(false);
@@ -57,7 +61,21 @@ const Furniture = () => {
     console.log(furniture);
     console.log(Material);
     console.log(MatDetails);
+    console.log(imageList)
   }, [furniture]);
+
+  const settings = {
+    arrows: true,
+    fade: true,
+    infinite: true,
+    autoplay: true,
+    speed: 500,
+    autoplaySpeed: 5000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+  }
 
   return (
     <Center>
@@ -72,7 +90,25 @@ const Furniture = () => {
         gridTemplateColumns={"300px 1fr"}
       >
         <GridItem area="image">
-          <Image src={furniture.image} width={380} />
+          <Box>
+            <link
+              rel="stylesheet"
+              type="text/css"
+              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+            />
+            <link
+              rel="stylesheet"
+              type="text/css"
+              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+            />
+            <IconButton zIndex={2} onClick={() => slider?.slickPrev()}><ChevronUpIcon /></IconButton>
+            <Slider {...settings} orientation="vertical" ref={(slider) => setSlider(slider)}>
+              {imageList.map((image) => (
+                <Image src={image} key={image} />
+              ))}
+            </Slider>
+            <IconButton zIndex={2} onClick={() => slider?.slickNext()}><ChevronDownIcon /></IconButton>
+          </Box>
         </GridItem>
         <GridItem area="text">
           <Text>{furniture.furnitureName}</Text>

@@ -39,7 +39,7 @@ const Home = () => {
               return (
                 <Box key={furniture.id}>
                   <Link to={"/furniture"} state={furniture}>
-                    <Image src={furniture.image} w={200} h={100} />
+                    <Image src={furniture.thumbnail} w={200} h={100} />
                   </Link>
                   <Link to={"/furniture"} state={furniture}>
                     {furniture.furnitureName}
@@ -56,7 +56,7 @@ const Home = () => {
               return (
                 <Box key={furniture.id}>
                   <Link to={"/furniture"} state={furniture}>
-                    <Image src={furniture.image} w={200} h={100} />
+                    <Image src={furniture.thumbnail} w={200} h={100} />
                   </Link>
                   <Link to={"/furniture"} state={furniture}>
                     {furniture.furnitureName}

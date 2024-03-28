@@ -43,6 +43,7 @@ function InsertFurniture(req, res) {
     req.body.ogCost,
     req.body.discCost,
     req.body.model,
+    req.body.thumbnail,
     req.body.image,
     req.body.video,
     req.body.material,

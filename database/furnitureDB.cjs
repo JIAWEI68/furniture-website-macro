@@ -5,12 +5,12 @@ let db = require("../server/connection.cjs");
 class FurnitureDB {
   getAllFurniture(callback) {
     let sql =
-      "SELECT A.id, A.furnitureName, A.furnitureDescription, A.ogCost, A.discCost, A.model, A.image, A.video, A.material, A.category, A.createdDate, B.featuresCategory, B.features, B.featuresDetails FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id";
+      "SELECT A.id, A.furnitureName, A.furnitureDescription, A.ogCost, A.discCost, A.model, A.thumbnail, A.image, A.video, A.material, A.category, A.createdDate, B.featuresCategory, B.features, B.featuresDetails FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id";
     db.query(sql, callback);
   }
   getFurnitureById(id, callback) { 
     let sql =
-      "SELECT A.id, A.furnitureName, A.furnitureDescription, A.ogCost, A.discCost, A.model, A.image, A.video, A.material, A.category, A.createdDate, B.featuresCategory, B.features, B.featuresDetails FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id AND A.id = ?";
+      "SELECT A.id, A.furnitureName, A.furnitureDescription, A.ogCost, A.discCost, A.model, A.thumbnail, A.image, A.video, A.material, A.category, A.createdDate, B.featuresCategory, B.features, B.featuresDetails FROM furniture AS A INNER JOIN furnitureFeatures AS B ON A.id = B.id AND A.id = ?";
     db.query(sql, [id], callback);
   }
   getFurnitureByCategories(category, callback) {
@@ -24,6 +24,7 @@ class FurnitureDB {
     ogCost,
     discCost,
     model,
+    thumbnail,
     image,
     video,
     material,
@@ -31,7 +32,7 @@ class FurnitureDB {
     callback
   ) {
     let sql =
-      "INSERT INTO furniture (furnitureName, furnitureDescription, ogCost, discCost, model, image, video, material, category, createdDate) VALUES (?,?,?,?,?,?,?,?,?,?);";
+      "INSERT INTO furniture (furnitureName, furnitureDescription, ogCost, discCost, model, thumbnail, image, video, material, category, createdDate) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
     db.query(
       sql,
       [
@@ -40,6 +41,7 @@ class FurnitureDB {
         ogCost,
         discCost,
         model,
+        thumbnail,
         image,
         video,
         material,
